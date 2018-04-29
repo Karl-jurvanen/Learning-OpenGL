@@ -48,6 +48,23 @@ int main(void)
 
 
 
+
+	//enable the vertex attribute we want
+	//0 here for position
+	glEnableVertexAttribArray(0);
+	/*
+	glVertexAttribPointer
+
+	index = 0 (position)
+	size = how many floats represent this vertex attribute
+	type = float
+	Normalized = should the data be normalized , here: no
+	stride = amount of bytes between each vertex
+	pointer = how many bytes from start of vertex to get to an attribute
+			here 0 because we're setting position
+	*/
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
