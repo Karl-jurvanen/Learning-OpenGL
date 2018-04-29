@@ -32,6 +32,22 @@ int main(void)
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
+	float positions[6] = {
+	 	-0.5f,  -0.5f,
+		 0.0f,   0.5f,
+		 0.5f,  -0.5f
+	};
+
+	//generate data for openGL from our vertices
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+
+	//bind selects the buffer we want to work with
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -40,11 +56,7 @@ int main(void)
 
 		glBegin(GL_TRIANGLES);
 
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f(0.0f, 0.5f);
-		glVertex2f(0.5f, -0.5f);
-
-		glEnd();
+		glDrawArrays(GL_TRIANGLES, 0, 3); // start from zero, three indices
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
