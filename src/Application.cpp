@@ -48,6 +48,7 @@ struct ShaderProgramSource
 	std::string FragmentSource;
 };
 
+//Read both shaders from a textfile
 static ShaderProgramSource ParseShader(const std::string& filepath)
 {
 	std::ifstream stream(filepath);
@@ -138,6 +139,11 @@ int main(void)
 	if (!glfwInit())
 		return -1;
 
+	//set opengl version, and run core profile
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
 	if (!window)
@@ -145,8 +151,6 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
-
-	
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
@@ -174,6 +178,13 @@ int main(void)
 		0,1,2,
 		2,3,0
 	};
+
+	//create vertex array object and bind it
+	unsigned int vao;
+	GLCall(glGenVertexArrays(1, &vao));
+	GLCall(glBindVertexArray(vao));
+
+
 	//generate data for openGL from our vertices
 	unsigned int buffer;
 	GLCall( glGenBuffers(1, &buffer));
@@ -198,6 +209,8 @@ int main(void)
 	stride = amount of bytes between each vertex
 	pointer = how many bytes from start of vertex to get to an attribute
 			here 0 because we're setting position
+
+			Vertex array object and buffer are bound together here
 	*/
 	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
 
