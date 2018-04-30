@@ -10,6 +10,7 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderProgramSource
 {
@@ -150,30 +151,11 @@ int main(void)
 		};
 
 		//create vertex array object and bind it
-		unsigned int vao;
-		GLCall(glGenVertexArrays(1, &vao));
-		GLCall(glBindVertexArray(vao));
-
-
+		VertexArray va;
 		VertexBuffer vb(positions, 4 * 2 * sizeof(float));
-
-		//enable the vertex attribute we want
-		//0 here for position
-		GLCall(glEnableVertexAttribArray(0));
-		/*
-		glVertexAttribPointer
-
-		index = 0 (position)
-		size = how many floats represent this vertex attribute
-		type = float
-		Normalized = should the data be normalized , here: no
-		stride = amount of bytes between each vertex
-		pointer = how many bytes from start of vertex to get to an attribute
-				here 0 because we're setting position
-
-				Vertex array object and buffer are bound together here
-		*/
-		GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+		VertexBufferLayout layout;
+		layout.Push<float>(2);
+		va.AddBuffer(vb, layout);
 
 
 		//generate indexbuffer
@@ -202,7 +184,10 @@ int main(void)
 			GLCall(glUseProgram(shader));
 			GLCall(glUniform4f(location, r, 0.3f, 1.0f, 1.0f));
 
-			GLCall(glBindVertexArray(vao));
+			//GLCall(glBindVertexArray(vao));
+			
+
+			va.Bind();
 			ib.Bind();
 			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
