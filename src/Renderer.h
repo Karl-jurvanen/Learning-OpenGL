@@ -1,6 +1,10 @@
 #pragma once
 
 #include <GL/glew.h>
+
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 //assertion for debugging __debugbreak() is visual studio compiler function
 #define Assert(x) if(!(x)) __debugbreak();
 //wrapper for OpenGL functions to break if an error is thrown
@@ -17,3 +21,15 @@
 
 void GLClearError();
 bool GLLogCall(const char* function, const char* file, int line);
+
+
+class Renderer
+{
+public:
+
+	void Clear() const;
+	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+
+};
+
+
